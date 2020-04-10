@@ -15,11 +15,25 @@ import com.example.movie.R
 import com.example.movie.api.RetrofitService
 import com.example.movie.model.Singleton
 import com.google.gson.JsonObject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import okhttp3.internal.notify
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.CoroutineContext
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), CoroutineScope {
+
+
+    private val job = Job()
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
+
+
     lateinit var preferences: SharedPreferences
     lateinit var nameInfo: TextView
     lateinit var emailInfo: TextView
@@ -38,38 +52,48 @@ class ProfileFragment : Fragment() {
 
     }
 
+
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
-
         logout.setOnClickListener {
-
             editor.clear().commit()
+
+            launch {
+                val body: JsonObject = JsonObject().apply {
+                    addProperty("session_id", Singleton.getSession())
+                }
+                val response = RetrofitService.getPostApi().deleteSessionCoroutine(BuildConfig.THE_MOVIE_DB_API_TOKEN,body)
+                if(response.isSuccessful){
+                    val intent = Intent(activity, LoginActivity::class.java)
+                    startActivity(intent)
+
+                }
+            }
+            /*editor.clear().commit()
 
             val body: JsonObject = JsonObject().apply {
                 addProperty("session_id", Singleton.getSession())
             }
-
             RetrofitService.getPostApi().deleteSession(BuildConfig.THE_MOVIE_DB_API_TOKEN, body)
                 .enqueue(object : Callback<JsonObject> {
                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-
                     }
-
                     override fun onResponse(
                         call: Call<JsonObject>,
                         response: Response<JsonObject>
                     ) {
-
                         if (response.isSuccessful) {
                             val intent = Intent(activity, LoginActivity::class.java)
                             startActivity(intent)
                         }
-
                     }
-                })
+                })*/
         }
     }
+
 
     private fun bindView(rootView: ViewGroup) {
         nameInfo = rootView.findViewById(R.id.name)
@@ -84,4 +108,6 @@ class ProfileFragment : Fragment() {
         nameInfo.text = authorizedName
         emailInfo.text = authorizedEmail
     }
+
+
 }
