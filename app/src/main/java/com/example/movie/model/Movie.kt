@@ -1,9 +1,13 @@
 package com.example.movie.model
 
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
+
+//@Entity(tableName="movie_table")
 data class Movie(
 
     @SerializedName("popularity")
@@ -14,6 +18,7 @@ data class Movie(
     val video: Boolean,
     @SerializedName("poster_path")
     val poster_path: String,
+   // @PrimaryKey
     @SerializedName("id")
     val id: Int,
     @SerializedName("adult")
