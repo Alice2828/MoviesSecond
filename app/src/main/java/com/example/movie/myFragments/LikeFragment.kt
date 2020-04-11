@@ -155,6 +155,11 @@ class LikeFragment : Fragment(), CoroutineScope {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
+    }
+
 
 
 }
