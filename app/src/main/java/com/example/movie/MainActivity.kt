@@ -11,6 +11,7 @@ import com.example.movie.myFragments.ProfileFragment
 import com.example.movie.pager.LockableViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+
 class MainActivity : AppCompatActivity() {
 
     lateinit var bottomNavigationView: BottomNavigationView
@@ -53,9 +54,5 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView = findViewById(R.id.bottom_navigation)
     }
 
-//    fun onClick()
-//    {
-//
-//    }
 
 }
