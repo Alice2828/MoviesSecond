@@ -28,7 +28,7 @@ interface PostApi {
     fun getPopularMovieList(@Query("api_key") apiKey: String): Call<MovieResponse>
 
     @GET("movie/popular")
-    suspend fun getPopularMovieListCoroutine(@Query("api_key") apiKey: String): Response<List<Movie>>
+    suspend fun getPopularMovieListCoroutine(@Query("api_key") apiKey: String): Response<MovieResponse>
 
 
     @GET("authentication/token/new")
@@ -66,6 +66,12 @@ interface PostApi {
         @Query("api_key") apiKey: String,
         @Query("session_id") sessionId: String?
     ): Call<MovieResponse>
+    @GET("account/{account_id}/favorite/movies")
+    suspend fun getFavouriteMoviesCoroutine(
+        @Path("account_id") accountId: Int?,
+        @Query("api_key") apiKey: String,
+        @Query("session_id") sessionId: String?
+    ): Response<MovieResponse>
 
     @GET("movie/{movie_id}/account_states")
     fun hasLike(
@@ -78,7 +84,7 @@ interface PostApi {
     fun deleteSession(@Query("api_key") apiKey: String, @Body body: JsonObject): Call<JsonObject>
 
     @DELETE("authentication/session")
-    suspend fun  deleteSessionCoroutine(@Query("api_key") apiKey: String, @Body body: JsonObject): Response<List<JsonObject>>
+    suspend fun  deleteSessionCoroutine(@Query("api_key") apiKey: String, @Body body: JsonObject): Response<JsonObject>
 
 
 

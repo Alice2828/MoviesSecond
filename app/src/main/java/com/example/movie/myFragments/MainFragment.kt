@@ -129,7 +129,7 @@ class MainFragment() : Fragment(), CoroutineScope {
     }
 
     private fun bigPicCard() {
-        try {
+        /*try {
             if (BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty()) {
                 return;
             }
@@ -159,12 +159,11 @@ class MainFragment() : Fragment(), CoroutineScope {
 
                     }
                 })
-
-
         } catch (e: Exception) {
             Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT)
         }
-
+*/
+        getMovieCoroutine()
         commentsIc.visibility = View.VISIBLE
         timeIc.visibility = View.VISIBLE
     }
@@ -172,6 +171,13 @@ class MainFragment() : Fragment(), CoroutineScope {
 
     private fun loadJSON() {
         try {
+            getMovieListCoroutine()
+        }
+        catch (e:Exception)
+        {
+            Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show()
+        }
+        /*try {
             if (BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty()) {
                 return;
             }
@@ -187,8 +193,7 @@ class MainFragment() : Fragment(), CoroutineScope {
                         //Log.d("My_post_list", response.body().toString())
                         if (response.isSuccessful) {
                             val list = response.body()?.results
-                            val list2 = list!!.subList(1, list.lastIndex)
-                            postAdapter?.moviesList = list2
+                            postAdapter?.moviesList = list
                             postAdapter?.notifyDataSetChanged()
                         }
                         swipeRefreshLayout.isRefreshing = false
@@ -197,22 +202,22 @@ class MainFragment() : Fragment(), CoroutineScope {
 
         } catch (e: Exception) {
             Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show()
-        }
+        }*/
 
     }
 
 
-    /*private fun getMovieCoroutine() {
-        try {
+    private fun getMovieCoroutine() {
+         try {
             if (BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty()) {
                 return;
             }
             a = 1
             launch {
                 swipeRefreshLayout.isRefreshing = true
-                val response = RetrofitService.getPostApi().getPopularMovieListCoroutine()
+                val response = RetrofitService.getPostApi().getPopularMovieListCoroutine(BuildConfig.THE_MOVIE_DB_API_TOKEN)
                 if (response.isSuccessful) {
-                    val list = response.body()
+                    val list = response.body()?.results
                     movie = list!!.first()
                     dateTv?.text = "март 30, 2020"
                     commentsTv?.text = "0"
@@ -231,23 +236,28 @@ class MainFragment() : Fragment(), CoroutineScope {
         commentsIc.visibility = View.VISIBLE
         timeIc.visibility = View.VISIBLE
     }
-*/
 
-   /* private fun getMovieListCoroutine() {
+
+    private fun getMovieListCoroutine() {
 
         launch {
             swipeRefreshLayout.isRefreshing = true
-            val response = RetrofitService.getPostApi().getPopularMovieListCoroutine(BuildConfig.THE_MOVIE_DB_API_TOKEN)
+            val response = RetrofitService.getPostApi()
+                .getPopularMovieListCoroutine(BuildConfig.THE_MOVIE_DB_API_TOKEN)
             if (response.isSuccessful) {
-                val list = response.body()
+                val list = response.body()?.results
                 val list2 = list!!.subList(1, list.lastIndex)
                 postAdapter?.moviesList = list2
                 postAdapter?.notifyDataSetChanged()
-            }else{
+            } else {
 
             }
-            swipeRefreshLayout.isRefreshing = false
-        }
-    }*/
 
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
+    }
     }

@@ -15,10 +15,7 @@ import com.example.movie.R
 import com.example.movie.api.RetrofitService
 import com.example.movie.model.Singleton
 import com.google.gson.JsonObject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.internal.notify
 import retrofit2.Call
 import retrofit2.Callback
@@ -51,8 +48,6 @@ class ProfileFragment : Fragment(), CoroutineScope {
         return rootView
 
     }
-
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
