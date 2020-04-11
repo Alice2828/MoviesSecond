@@ -20,9 +20,11 @@ import com.example.movie.api.RetrofitService
 import com.example.movie.model.Movie
 import com.example.movie.model.MovieResponse
 import com.example.movie.model.Singleton
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.CoroutineContext
 
 class LikeFragment : Fragment() {
     lateinit var relativeLayout: RelativeLayout
@@ -40,6 +42,7 @@ class LikeFragment : Fragment() {
     private var rootView: View? = null
     var session_id = Singleton.getSession()
     var account_id = Singleton.getAccountId()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -106,6 +109,9 @@ class LikeFragment : Fragment() {
 
 
     }
+
+
+
     private fun bindView()
     {
         commentsIc = (rootView as ViewGroup).findViewById(R.id.ic_comments)

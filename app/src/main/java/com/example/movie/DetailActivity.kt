@@ -18,11 +18,13 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.CoroutineContext
 
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : AppCompatActivity(),CoroutineScope by MainScope() {
     lateinit var nameofMovie: TextView
     lateinit var plotSynopsis: TextView
     lateinit var userRating: TextView
@@ -32,6 +34,10 @@ class DetailActivity : AppCompatActivity() {
     var movie_id: Int? = null
     var account_id: Int? = null
     var session_id: String? = ""
+    val job= Job()
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +48,7 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.detail_menu, menu)
-        hasLike()
+        hasLikeCoroutine()
         return true
     }
 
@@ -55,11 +61,11 @@ class DetailActivity : AppCompatActivity() {
             if (drawable.constantState!!.equals(getDrawable(R.drawable.ic_favorite_border)?.constantState))
             {
                 item.icon = getDrawable(R.drawable.ic_favorite_liked)
-                likeMovie(true)
+                likeMovieCoroutine(true)
             } else
             {
                 item.icon = getDrawable(R.drawable.ic_favorite_border)
-                likeMovie(false)
+                likeMovieCoroutine(false)
             }
         }
         if (item.itemId == android.R.id.home) {
@@ -108,6 +114,28 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun hasLikeCoroutine(){
+        launch {
+            val response=RetrofitService.getPostApi().hasLikeCoroutine(movie_id,BuildConfig.THE_MOVIE_DB_API_TOKEN,session_id)
+            Log.d("TAG", response.toString())
+            if(response.isSuccessful){
+                val gson = Gson()
+                var like = gson.fromJson(
+                    response.body(),
+                    FavResponse::class.java
+                ).favorite
+                if (like)
+                    toolbar.menu.findItem(R.id.favourite).icon =
+                        getDrawable(R.drawable.ic_favorite_liked)
+                else
+                    toolbar.menu.findItem(R.id.favourite).icon =
+                        getDrawable(R.drawable.ic_favorite_border)
+
+            }
+        }
+    }
+
+
     private fun hasLike() {
 
 
@@ -142,6 +170,33 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
+    private fun likeMovieCoroutine(favourite: Boolean){
+        launch {
+            val body = JsonObject().apply {
+                addProperty("media_type", "movie")
+                addProperty("media_id", movie_id)
+                addProperty("favorite", favourite)
+            }
+            val response=RetrofitService.getPostApi().rateCoroutine(account_id,BuildConfig.THE_MOVIE_DB_API_TOKEN,session_id,body)
+            if(response.isSuccessful)
+            {
+                if (favourite)
+                    Toast.makeText(
+                        this@DetailActivity,
+                        "Movie has been added to favourites",
+                        Toast.LENGTH_LONG
+                    ).show()
+                else
+                    Toast.makeText(
+                        this@DetailActivity,
+                        "Movie has been removed from favourites",
+                        Toast.LENGTH_LONG
+                    ).show()
+            }
+
+        }
+
+    }
     private fun likeMovie(favourite: Boolean) {
         val body = JsonObject().apply {
             addProperty("media_type", "movie")
