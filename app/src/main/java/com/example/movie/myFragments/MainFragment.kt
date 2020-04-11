@@ -22,10 +22,7 @@ import com.example.movie.adapter.MoviesAdapter
 import com.example.movie.api.RetrofitService
 import com.example.movie.model.Movie
 import com.example.movie.model.MovieResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,8 +31,7 @@ import kotlin.coroutines.CoroutineContext
 /**
  * A simple [Fragment] subclass.
  */
-class MainFragment() : Fragment(), CoroutineScope {
-
+class MainFragment() : Fragment(), CoroutineScope by MainScope() {
 
 
     private val job = Job()
@@ -129,6 +125,7 @@ class MainFragment() : Fragment(), CoroutineScope {
     }
 
     private fun bigPicCard() {
+
         /*try {
             if (BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty()) {
                 return;
@@ -164,12 +161,78 @@ class MainFragment() : Fragment(), CoroutineScope {
         }
 */
         getMovieCoroutine()
+//        try {
+//            if (BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty()) {
+//                return;
+//            }
+//            RetrofitService.getPostApi().getPopularMovieList(BuildConfig.THE_MOVIE_DB_API_TOKEN)
+//                .enqueue(object : Callback<MovieResponse> {
+//                    override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+//                        swipeRefreshLayout.isRefreshing = false
+//                        a = 1
+//                    }
+//
+//                    override fun onResponse(
+//                        call: Call<MovieResponse>,
+//                        response: Response<MovieResponse>
+//                    ) {
+//                        //Log.d("My_post_list", response.body().toString())
+//                        if (response.isSuccessful) {
+//                            val list = response.body()?.results
+//                            movie = list!!.first()
+//                            dateTv?.text = "март 30, 2020"
+//                            commentsTv?.text = "0"
+//                            bigPictv?.text = movie.original_title
+//                            bigPicCardIm?.visibility = View.VISIBLE
+//                            Glide.with(rootView!!.context)
+//                                .load(movie.getPosterPath())
+//                                .into((rootView as ViewGroup).findViewById(R.id.main_big_pic))
+//                        }
+//                        swipeRefreshLayout.isRefreshing = false
+//
+//                    }
+//                })
+//
+//
+//        } catch (e: Exception) {
+//            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT)
+//        }
+        getMovieCoroutine()
+
+
         commentsIc.visibility = View.VISIBLE
         timeIc.visibility = View.VISIBLE
     }
 
 
     private fun loadJSON() {
+//        try {
+//            if (BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty()) {
+//                return;
+//            }
+//            RetrofitService.getPostApi().getPopularMovieList(BuildConfig.THE_MOVIE_DB_API_TOKEN)
+//                .enqueue(object : Callback<MovieResponse> {
+//                    override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+//                        swipeRefreshLayout.isRefreshing = false
+//                    }
+//                    override fun onResponse(
+//                        call: Call<MovieResponse>,
+//                        response: Response<MovieResponse>
+//                    ) {
+//                        //Log.d("My_post_list", response.body().toString())
+//                        if (response.isSuccessful) {
+//                            val list = response.body()?.results
+//                            val list2 = list!!.subList(1, list.lastIndex)
+//                            postAdapter?.moviesList = list2
+//                            postAdapter?.notifyDataSetChanged()
+//                        }
+//                        swipeRefreshLayout.isRefreshing = false
+//                    }
+//                })
+//
+//        } catch (e: Exception) {
+//            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show()
+//        }
         try {
             getMovieListCoroutine()
         }
@@ -207,8 +270,10 @@ class MainFragment() : Fragment(), CoroutineScope {
     }
 
 
-    private fun getMovieCoroutine() {
-         try {
+
+   private fun getMovieCoroutine() {
+        try {
+
             if (BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty()) {
                 return;
             }
@@ -259,5 +324,6 @@ class MainFragment() : Fragment(), CoroutineScope {
     override fun onDestroy() {
         super.onDestroy()
         job.cancel()
+
     }
-    }
+}

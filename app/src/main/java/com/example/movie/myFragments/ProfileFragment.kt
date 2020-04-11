@@ -60,13 +60,15 @@ class ProfileFragment : Fragment(), CoroutineScope {
                 val body: JsonObject = JsonObject().apply {
                     addProperty("session_id", Singleton.getSession())
                 }
-                val response = RetrofitService.getPostApi().deleteSessionCoroutine(BuildConfig.THE_MOVIE_DB_API_TOKEN,body)
-                if(response.isSuccessful){
+                val response = RetrofitService.getPostApi()
+                    .deleteSessionCoroutine(BuildConfig.THE_MOVIE_DB_API_TOKEN, body)
+                if (response.isSuccessful) {
                     val intent = Intent(activity, LoginActivity::class.java)
                     startActivity(intent)
 
                 }
             }
+
             /*editor.clear().commit()
 
             val body: JsonObject = JsonObject().apply {
@@ -97,12 +99,16 @@ class ProfileFragment : Fragment(), CoroutineScope {
         editor = preferences.edit()
     }
 
-   private fun initViews() {
+    private fun initViews() {
         val authorizedName = Singleton.getUserName()
         val authorizedEmail = Singleton.getUserName() + "@mail.ru"
         nameInfo.text = authorizedName
         emailInfo.text = authorizedEmail
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
+    }
 
 }
