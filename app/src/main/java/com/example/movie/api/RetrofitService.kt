@@ -86,6 +86,12 @@ interface PostApi {
         @Query("api_key") apiKey: String,
         @Query("session_id") sessionId: String?
     ): Call<MovieResponse>
+    @GET("account/{account_id}/favorite/movies")
+    suspend fun getFavouriteMoviesCoroutine(
+        @Path("account_id") accountId: Int?,
+        @Query("api_key") apiKey: String,
+        @Query("session_id") sessionId: String?
+    ): Response<MovieResponse>
 
     @GET("account/{account_id}/favorite/movies")
     suspend fun getFavoriteMoviesCoroutine(
