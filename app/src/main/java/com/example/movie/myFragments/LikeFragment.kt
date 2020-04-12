@@ -85,37 +85,7 @@ class LikeFragment : Fragment(), CoroutineScope {
 
 
     fun loadJSON() {
-        /*try {
-            if (BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty()) {
-                return;
-            }
-             RetrofitService.getPostApi()
-                .getFavoriteMovies(account_id, BuildConfig.THE_MOVIE_DB_API_TOKEN, session_id)
-                .enqueue(object : Callback<MovieResponse> {
-                    override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-                        swipeRefreshLayout.isRefreshing = false
-                    }
-
-                    override fun onResponse(
-                        call: Call<MovieResponse>,
-                        response: Response<MovieResponse>
-                    ) {
-
-                        if (response.isSuccessful) {
-                            val list = response.body()?.results
-                            postAdapter?.moviesList = list
-                            postAdapter?.notifyDataSetChanged()
-                        }
-                        swipeRefreshLayout.isRefreshing = false
-                    }
-                })
-
-
-        } catch (e: Exception) {
-            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show()
-        }
-*/
-            getMovieLikesCoroutine()
+                   getMovieLikesCoroutine()
     }
     private fun bindView()
     {

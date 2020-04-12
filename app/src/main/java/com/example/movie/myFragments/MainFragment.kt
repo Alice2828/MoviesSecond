@@ -125,114 +125,14 @@ class MainFragment() : Fragment(), CoroutineScope by MainScope() {
     }
 
     private fun bigPicCard() {
-
-        /*try {
-            if (BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty()) {
-                return;
-            }
-            RetrofitService.getPostApi().getPopularMovieList(BuildConfig.THE_MOVIE_DB_API_TOKEN)
-                .enqueue(object : Callback<MovieResponse> {
-                    override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-                        swipeRefreshLayout.isRefreshing = false
-                        a = 1
-                    }
-                    override fun onResponse(
-                        call: Call<MovieResponse>,
-                        response: Response<MovieResponse>
-                    ) {
-                        //Log.d("My_post_list", response.body().toString())
-                        if (response.isSuccessful) {
-                            val list = response.body()?.results
-                        movie = list!!.first()
-                        dateTv?.text = "март 30, 2020"
-                        commentsTv?.text = "0"
-                        bigPictv?.text = movie.original_title
-                        bigPicCardIm?.visibility = View.VISIBLE
-                        Glide.with(rootView!!.context)
-                            .load(movie.getPosterPath())
-                            .into((rootView as ViewGroup).findViewById(R.id.main_big_pic))
-                    }
-                        swipeRefreshLayout.isRefreshing = false
-
-                    }
-                })
-        } catch (e: Exception) {
-            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT)
-        }
-*/
         getMovieCoroutine()
-//        try {
-//            if (BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty()) {
-//                return;
-//            }
-//            RetrofitService.getPostApi().getPopularMovieList(BuildConfig.THE_MOVIE_DB_API_TOKEN)
-//                .enqueue(object : Callback<MovieResponse> {
-//                    override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-//                        swipeRefreshLayout.isRefreshing = false
-//                        a = 1
-//                    }
-//
-//                    override fun onResponse(
-//                        call: Call<MovieResponse>,
-//                        response: Response<MovieResponse>
-//                    ) {
-//                        //Log.d("My_post_list", response.body().toString())
-//                        if (response.isSuccessful) {
-//                            val list = response.body()?.results
-//                            movie = list!!.first()
-//                            dateTv?.text = "март 30, 2020"
-//                            commentsTv?.text = "0"
-//                            bigPictv?.text = movie.original_title
-//                            bigPicCardIm?.visibility = View.VISIBLE
-//                            Glide.with(rootView!!.context)
-//                                .load(movie.getPosterPath())
-//                                .into((rootView as ViewGroup).findViewById(R.id.main_big_pic))
-//                        }
-//                        swipeRefreshLayout.isRefreshing = false
-//
-//                    }
-//                })
-//
-//
-//        } catch (e: Exception) {
-//            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT)
-//        }
-        getMovieCoroutine()
-
-
         commentsIc.visibility = View.VISIBLE
         timeIc.visibility = View.VISIBLE
     }
 
 
     private fun loadJSON() {
-//        try {
-//            if (BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty()) {
-//                return;
-//            }
-//            RetrofitService.getPostApi().getPopularMovieList(BuildConfig.THE_MOVIE_DB_API_TOKEN)
-//                .enqueue(object : Callback<MovieResponse> {
-//                    override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-//                        swipeRefreshLayout.isRefreshing = false
-//                    }
-//                    override fun onResponse(
-//                        call: Call<MovieResponse>,
-//                        response: Response<MovieResponse>
-//                    ) {
-//                        //Log.d("My_post_list", response.body().toString())
-//                        if (response.isSuccessful) {
-//                            val list = response.body()?.results
-//                            val list2 = list!!.subList(1, list.lastIndex)
-//                            postAdapter?.moviesList = list2
-//                            postAdapter?.notifyDataSetChanged()
-//                        }
-//                        swipeRefreshLayout.isRefreshing = false
-//                    }
-//                })
-//
-//        } catch (e: Exception) {
-//            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show()
-//        }
+
         try {
             getMovieListCoroutine()
         }
@@ -240,32 +140,6 @@ class MainFragment() : Fragment(), CoroutineScope by MainScope() {
         {
             Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show()
         }
-        /*try {
-            if (BuildConfig.THE_MOVIE_DB_API_TOKEN.isEmpty()) {
-                return;
-            }
-            RetrofitService.getPostApi().getPopularMovieList(BuildConfig.THE_MOVIE_DB_API_TOKEN)
-                .enqueue(object : Callback<MovieResponse> {
-                    override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-                        swipeRefreshLayout.isRefreshing = false
-                    }
-                    override fun onResponse(
-                        call: Call<MovieResponse>,
-                        response: Response<MovieResponse>
-                    ) {
-                        //Log.d("My_post_list", response.body().toString())
-                        if (response.isSuccessful) {
-                            val list = response.body()?.results
-                            postAdapter?.moviesList = list
-                            postAdapter?.notifyDataSetChanged()
-                        }
-                        swipeRefreshLayout.isRefreshing = false
-                    }
-                })
-
-        } catch (e: Exception) {
-            Toast.makeText(activity, e.toString(), Toast.LENGTH_SHORT).show()
-        }*/
 
     }
 
