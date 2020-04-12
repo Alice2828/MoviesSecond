@@ -20,6 +20,7 @@ import com.example.movie.api.RetrofitService
 import com.example.movie.model.Movie
 import com.example.movie.model.MovieResponse
 import com.example.movie.model.Singleton
+import kotlinx.coroutines.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -52,6 +53,7 @@ class LikeFragment : Fragment(), CoroutineScope {
     private var rootView: View? = null
     var session_id = Singleton.getSession()
     var account_id = Singleton.getAccountId()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -117,6 +119,9 @@ class LikeFragment : Fragment(), CoroutineScope {
 */
             getMovieLikesCoroutine()
     }
+
+
+
     private fun bindView()
     {
         commentsIc = (rootView as ViewGroup).findViewById(R.id.ic_comments)
